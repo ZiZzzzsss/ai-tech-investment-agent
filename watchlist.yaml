@@ -1,0 +1,362 @@
+# AI technology investment tracking watchlist.
+# Mock configuration only. Verify all tickers, exchanges, and company metadata
+# before using this file for real research or reporting.
+
+watchlist:
+  companies:
+    - ticker: ASML
+      company_name: ASML Holding N.V.
+      exchange: Nasdaq
+      ai_value_chain_category: Semiconductor lithography and EUV equipment bottleneck
+      risk_level: High
+      tracking_frequency: Daily price and news; quarterly orders and backlog
+      key_indicators_to_monitor:
+        - EUV backlog
+        - Net bookings
+        - China export controls
+        - Semiconductor equipment capex cycle
+      main_valuation_method: Scenario-weighted P/E, EV/EBITDA, and equipment-cycle normalized multiples
+      main_risks:
+        - Export restrictions
+        - Semiconductor capex downturn
+        - Customer concentration
+
+    - ticker: ARM
+      company_name: Arm Holdings plc
+      exchange: Nasdaq
+      ai_value_chain_category: Processor IP for mobile, edge AI, and data-center compute
+      risk_level: High
+      tracking_frequency: Daily price and news; quarterly royalties and licensing
+      key_indicators_to_monitor:
+        - Royalty growth
+        - Licensing growth
+        - AI data-center adoption
+        - Customer concentration
+      main_valuation_method: P/E, EV/Sales, royalty growth scenarios, and TAM-adjusted PEG
+      main_risks:
+        - Valuation compression
+        - Royalty growth slowdown
+        - Competitive architecture shifts
+
+    - ticker: AVGO
+      company_name: Broadcom Inc.
+      exchange: Nasdaq
+      ai_value_chain_category: AI networking, custom silicon, and infrastructure software
+      risk_level: Medium-High
+      tracking_frequency: Daily price and news; quarterly AI revenue and backlog
+      key_indicators_to_monitor:
+        - AI networking revenue
+        - Custom silicon demand
+        - VMware integration
+        - Customer concentration
+      main_valuation_method: EV/EBITDA, P/E, FCF yield, and AI custom silicon scenarios
+      main_risks:
+        - Customer concentration
+        - Integration risk
+        - Semiconductor cyclicality
+
+    - ticker: NVDA
+      company_name: NVIDIA Corporation
+      exchange: Nasdaq
+      ai_value_chain_category: AI accelerators, networking, and data-center compute platform
+      risk_level: High
+      tracking_frequency: Daily price and news; quarterly fundamentals
+      key_indicators_to_monitor:
+        - Data-center revenue growth
+        - GPU accelerator demand
+        - HBM and advanced packaging supply
+        - Hyperscaler capex trends
+        - Export-control exposure
+        - Gross margin durability
+      main_valuation_method: Scenario-weighted EV/Sales, P/E, and FCF multiple framework
+      main_risks:
+        - AI capex digestion cycle
+        - Customer concentration
+        - Export restrictions
+        - Supply-chain bottlenecks
+        - Valuation multiple compression
+
+    - ticker: AMD
+      company_name: Advanced Micro Devices, Inc.
+      exchange: Nasdaq
+      ai_value_chain_category: AI accelerator challenger, CPUs, GPUs, and adaptive compute
+      risk_level: High
+      tracking_frequency: Daily price and news; quarterly fundamentals
+      key_indicators_to_monitor:
+        - AI accelerator revenue ramp
+        - Server CPU market share
+        - PC cycle recovery
+        - Gross margin progression
+        - Foundry supply and costs
+        - Estimate revisions
+      main_valuation_method: Scenario-weighted P/E, EV/Sales, and TAM-adjusted PEG
+      main_risks:
+        - AI product execution risk
+        - Competitive pressure from larger accelerator platforms
+        - PC and server cyclicality
+        - Margin dilution from ramp costs
+        - Valuation sensitivity to AI expectations
+
+    - ticker: MU
+      company_name: Micron Technology, Inc.
+      exchange: Nasdaq
+      ai_value_chain_category: Memory supplier with HBM, DRAM, and NAND exposure
+      risk_level: High
+      tracking_frequency: Weekly industry pricing; quarterly fundamentals
+      key_indicators_to_monitor:
+        - HBM pricing and capacity
+        - DRAM pricing
+        - NAND pricing
+        - Data-center memory demand
+        - Inventory cycle
+        - Capex discipline
+      main_valuation_method: Cycle-normalized EV/EBITDA, P/B, and scenario margins
+      main_risks:
+        - Memory pricing downturn
+        - Inventory oversupply
+        - Capex intensity
+        - Customer concentration
+        - China and export-control risk
+
+    - ticker: MSFT
+      company_name: Microsoft Corporation
+      exchange: Nasdaq
+      ai_value_chain_category: Hyperscaler, enterprise software, AI platform, and cloud infrastructure
+      risk_level: Medium
+      tracking_frequency: Daily price and news; quarterly fundamentals
+      key_indicators_to_monitor:
+        - Azure growth
+        - AI contribution to cloud demand
+        - Copilot adoption
+        - Capex and depreciation growth
+        - Operating margin durability
+        - OpenAI ecosystem exposure
+      main_valuation_method: P/E, FCF yield, sum-of-the-parts, and scenario-weighted DCF
+      main_risks:
+        - AI monetization lag
+        - Rising capex and depreciation
+        - Regulatory scrutiny
+        - Cloud competition
+        - Multiple compression
+
+    - ticker: GOOGL
+      company_name: Alphabet Inc.
+      exchange: Nasdaq
+      ai_value_chain_category: Hyperscaler, AI models, digital advertising, and cloud platform
+      risk_level: Medium
+      tracking_frequency: Daily price and news; quarterly fundamentals
+      key_indicators_to_monitor:
+        - Search and advertising growth
+        - Google Cloud growth and margins
+        - AI model adoption
+        - Capex intensity
+        - Traffic acquisition costs
+        - Regulatory developments
+      main_valuation_method: P/E, FCF yield, sum-of-the-parts, and scenario-weighted DCF
+      main_risks:
+        - Search disruption from AI interfaces
+        - Regulatory remedies
+        - AI capex pressure
+        - Cloud competition
+        - Advertising cyclicality
+
+    - ticker: AMZN
+      company_name: Amazon.com, Inc.
+      exchange: Nasdaq
+      ai_value_chain_category: Hyperscaler, AI cloud infrastructure, ecommerce, and logistics platform
+      risk_level: Medium
+      tracking_frequency: Daily price and news; quarterly fundamentals
+      key_indicators_to_monitor:
+        - AWS growth
+        - AI cloud demand
+        - Retail margin expansion
+        - Advertising growth
+        - Capex and fulfillment efficiency
+        - Free cash flow conversion
+      main_valuation_method: Sum-of-the-parts, EV/EBITDA, FCF yield, and scenario-weighted DCF
+      main_risks:
+        - AWS growth slowdown
+        - AI infrastructure capex burden
+        - Retail margin volatility
+        - Regulatory scrutiny
+        - Consumer demand cyclicality
+
+    - ticker: META
+      company_name: Meta Platforms, Inc.
+      exchange: Nasdaq
+      ai_value_chain_category: AI-driven consumer internet, advertising, models, and infrastructure
+      risk_level: Medium
+      tracking_frequency: Daily price and news; quarterly fundamentals
+      key_indicators_to_monitor:
+        - Advertising revenue growth
+        - AI engagement and ad-targeting efficiency
+        - Capex and infrastructure plans
+        - Reality Labs losses
+        - User engagement
+        - Regulatory developments
+      main_valuation_method: P/E, FCF yield, and scenario-weighted AI capex margin analysis
+      main_risks:
+        - AI capex outpacing monetization
+        - Advertising cyclicality
+        - Regulatory pressure
+        - Reality Labs losses
+        - Platform engagement shifts
+
+    - ticker: ORCL
+      company_name: Oracle Corporation
+      exchange: NYSE
+      ai_value_chain_category: Enterprise software, database platform, and AI cloud infrastructure
+      risk_level: Medium-High
+      tracking_frequency: Daily price and news; quarterly fundamentals
+      key_indicators_to_monitor:
+        - Cloud infrastructure growth
+        - Remaining performance obligations
+        - AI workload demand
+        - Capex and data-center expansion
+        - Debt and free cash flow
+        - Database customer retention
+      main_valuation_method: EV/EBITDA, P/E, RPO-supported revenue scenarios, and FCF yield
+      main_risks:
+        - Execution risk in cloud infrastructure buildout
+        - Debt and capex pressure
+        - Customer concentration in large AI contracts
+        - Competition from hyperscalers
+        - Multiple compression
+
+    - ticker: NBIS
+      company_name: Nebius Group N.V.
+      exchange: Nasdaq
+      ai_value_chain_category: AI cloud infrastructure and neocloud compute platform
+      risk_level: Very High
+      tracking_frequency: Daily price and news; monthly capacity and funding checks; quarterly fundamentals
+      key_indicators_to_monitor:
+        - AI cloud utilization
+        - Contract backlog and signed customer commitments
+        - Data-center capacity additions
+        - GPU supply
+        - Funding runway and dilution
+        - Gross margin progression
+      main_valuation_method: Scenario-weighted EV/Sales, capacity economics, and dilution-adjusted fair value
+      main_risks:
+        - Early-stage execution risk
+        - Funding and dilution risk
+        - Customer concentration
+        - GPU cloud pricing pressure
+        - Power and data-center constraints
+
+    - ticker: PLTR
+      company_name: Palantir Technologies Inc.
+      exchange: Nasdaq
+      ai_value_chain_category: AI software, data integration, and enterprise analytics platform
+      risk_level: High
+      tracking_frequency: Daily price and news; quarterly commercial growth
+      key_indicators_to_monitor:
+        - Commercial customer growth
+        - Remaining deal value
+        - AIP adoption
+        - Margin durability
+      main_valuation_method: EV/Sales, FCF yield, and growth-duration scenarios
+      main_risks:
+        - Valuation multiple compression
+        - Government concentration
+        - AI adoption disappointment
+
+    - ticker: TSM
+      company_name: Taiwan Semiconductor Manufacturing Company Limited
+      exchange: NYSE
+      ai_value_chain_category: Advanced foundry and AI silicon manufacturing platform
+      risk_level: High
+      tracking_frequency: Daily price and news; monthly revenue; quarterly fundamentals
+      key_indicators_to_monitor:
+        - Monthly revenue
+        - Advanced-node demand
+        - AI accelerator wafer demand
+        - Geopolitical risk
+      main_valuation_method: P/E, EV/EBITDA, FCF yield, and foundry-cycle scenarios
+      main_risks:
+        - Taiwan geopolitical risk
+        - Customer concentration
+        - Foundry cycle downturn
+
+    - ticker: SIVE
+      company_name: TODO: Verify ticker and company identity
+      exchange: TODO: Verify exchange
+      ai_value_chain_category: TODO: Verify AI value-chain category
+      risk_level: Very High
+      tracking_frequency: Verification required before active tracking
+      key_indicators_to_monitor:
+        - TODO: Verify whether this is the intended ticker
+        - Company filings and investor relations availability
+        - Market data availability
+        - Business model and AI exposure
+        - Liquidity and listing status
+      main_valuation_method: TODO: Define after ticker verification
+      main_risks:
+        - Ticker identity is unverified
+        - Source availability risk
+        - Liquidity and listing risk
+        - Business model uncertainty
+
+  macro_indicators:
+    - name: US 10-year yield
+      category: rates
+      tracking_frequency: Daily
+      relevance: Discount rates, equity duration, growth-stock multiple sensitivity
+    - name: CPI
+      category: inflation
+      tracking_frequency: Monthly
+      relevance: Inflation pressure, Fed policy path, margin and demand sensitivity
+    - name: PCE
+      category: inflation
+      tracking_frequency: Monthly
+      relevance: Fed-preferred inflation measure and policy-rate expectations
+    - name: Fed rate expectations
+      category: monetary_policy
+      tracking_frequency: Daily
+      relevance: Cost of capital, valuation multiples, and risk appetite
+    - name: Nasdaq 100
+      category: equity_index
+      tracking_frequency: Daily
+      relevance: Large-cap technology risk appetite and benchmark momentum
+    - name: SOX index
+      category: semiconductor_index
+      tracking_frequency: Daily
+      relevance: Semiconductor cycle momentum and peer relative strength
+    - name: VIX
+      category: volatility
+      tracking_frequency: Daily
+      relevance: Market stress, risk appetite, and position-sizing discipline
+    - name: DXY
+      category: currency
+      tracking_frequency: Daily
+      relevance: USD strength, multinational revenue translation, and global liquidity
+
+  industry_indicators:
+    - name: Semiconductor monthly sales
+      category: semiconductor_demand
+      tracking_frequency: Monthly
+      relevance: Industry revenue cycle and demand trend confirmation
+    - name: Hyperscaler capex
+      category: ai_infrastructure_demand
+      tracking_frequency: Quarterly
+      relevance: AI data-center demand, GPU demand, networking demand, and power infrastructure
+    - name: HBM pricing
+      category: memory_pricing
+      tracking_frequency: Monthly
+      relevance: AI memory profitability and supply-demand balance
+    - name: DRAM pricing
+      category: memory_pricing
+      tracking_frequency: Weekly to monthly
+      relevance: Memory cycle health and gross margin direction
+    - name: TSMC monthly revenue
+      category: foundry_demand
+      tracking_frequency: Monthly
+      relevance: Advanced-node and AI silicon demand proxy
+    - name: Export controls
+      category: policy_risk
+      tracking_frequency: Event-driven
+      relevance: AI accelerator, semiconductor equipment, and China revenue risk
+    - name: Data center power constraints
+      category: infrastructure_constraint
+      tracking_frequency: Monthly and event-driven
+      relevance: AI capacity deployment, project delays, and capex efficiency

@@ -1,0 +1,96 @@
+valuation_case:
+  inputs:
+    price: 100
+    shares_outstanding: 10
+    cash: 100
+    total_debt: 300
+    revenue: 500
+    gross_profit: 250
+    operating_income: 100
+    net_income: 50
+    operating_cash_flow: 80
+    capex: 20
+    ebitda: 120
+    market_cap: 1000
+    enterprise_value: 1200
+    free_cash_flow: 60
+  expected:
+    market_cap: 1000
+    enterprise_value: 1200
+    ev_sales: 2.4
+    ev_ebitda: 10
+    pe_ratio: 20
+    free_cash_flow: 60
+    p_fcf: 16.6667
+    ps_ratio: 2
+    gross_margin: 0.5
+    operating_margin: 0.2
+    net_margin: 0.1
+    fcf_margin: 0.12
+
+growth_case:
+  inputs:
+    q1: 100
+    q2: 120
+    q3: 130
+    q4: 150
+    operating_cash_flow_ttm: 100
+    capex_ttm: -30
+    current_period_revenue: 150
+    prior_year_same_period_revenue: 100
+    current_quarter_revenue: 150
+    previous_quarter_revenue: 120
+    beginning_value: 100
+    ending_value: 121
+    years: 2
+  expected:
+    ttm_sum: 500
+    ttm_free_cash_flow: 70
+    revenue_growth_yoy: 0.5
+    revenue_growth_qoq: 0.25
+    cagr: 0.1
+
+market_case:
+  inputs:
+    closing_prices: [10, 20, 30, 40, 50]
+    n: 3
+    current_price: 60
+    moving_average: 40
+    dma_200: 50
+    fundamental_support_score: 70
+  expected:
+    moving_average_n: 40
+    price_dma_divergence: 0.5
+    gf_dma_escape_ratio: 1.0909
+
+scenario_case:
+  inputs:
+    scenario_values: [80, 100, 140]
+    scenario_probabilities: [0.25, 0.5, 0.25]
+    base_case_value: 100
+    margin_of_safety_factor: 0.25
+  expected:
+    probability_weighted_value: 105
+    conservative_entry: 75
+
+peg_case:
+  inputs:
+    pe_ratio: 20
+    eps_growth_percent: 25
+    traditional_peg: 0.8
+    tam_multiplier: 0.84
+    quality_multiplier: 0.86
+    risk_multiplier: 1.17
+  expected:
+    traditional_peg: 0.8
+    tam_adjusted_peg: 0.6762
+
+data_quality_case:
+  inputs:
+    missing_count: 2
+    stale_count: 1
+    inconsistent_count: 1
+    impossible_count: 1
+    mock_data_used: 0
+  expected:
+    data_quality_score: 52

@@ -1,0 +1,6 @@
+yfinance
+yahooquery
+pandas
+requests
+python-dotenv
+pytest

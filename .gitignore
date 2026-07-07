@@ -1,0 +1,22 @@
+# Private reports
+local_site/
+outputs/
+outputs/source_cache/
+outputs/logs/
+reports/
+*.html
+*.log
+
+# API keys and secrets
+.env
+.env.local
+
+# Python
+**pycache**/
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+
+# OS
+.DS_Store

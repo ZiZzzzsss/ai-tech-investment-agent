@@ -1,0 +1,537 @@
+﻿NVDA:
+  - id: nvda_us10y
+    ticker: NVDA
+    category: macro
+    event_or_indicator: US 10-year treasury yield
+    why_it_matters: Higher long-term rates can pressure valuation multiples for high-growth AI infrastructure stocks.
+    status: monitoring
+    impact_if_validated: negative
+    importance: high
+    frequency: daily
+    validation_rule: Validate through FRED or Treasury data if the 10-year yield rises sharply or remains elevated for several sessions.
+    suggested_research_response: Review entry zone and update valuation model discount-rate sensitivity.
+    next_check_date: Daily market close
+    source_priority:
+      - FRED
+      - treasury data
+    source_url: TODO
+    confidence: high
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+  - id: nvda_sox_index
+    ticker: NVDA
+    category: market index
+    event_or_indicator: SOX semiconductor index trend
+    why_it_matters: Semiconductor breadth can reveal whether AI accelerator strength is company-specific or sector-wide.
+    status: monitoring
+    impact_if_validated: mixed
+    importance: medium
+    frequency: weekly
+    validation_rule: Compare NVDA relative strength against the SOX index and confirm whether divergence is persistent.
+    suggested_research_response: Monitor next release and review GF-DMA trend assumptions.
+    next_check_date: Weekly close
+    source_priority:
+      - exchange data
+      - licensed market data
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+  - id: nvda_hyperscaler_capex
+    ticker: NVDA
+    category: industry
+    event_or_indicator: Hyperscaler AI capex guidance
+    why_it_matters: NVIDIA data-center GPU demand depends heavily on hyperscaler AI infrastructure spending.
+    status: monitoring
+    impact_if_validated: positive
+    importance: high
+    frequency: quarterly
+    validation_rule: Validate with confirmed capex increases from MSFT, AMZN, GOOGL, or META earnings materials.
+    suggested_research_response: Increase thesis confidence if multiple hyperscalers raise AI capex guidance.
+    next_check_date: Next MSFT / AMZN / GOOGL / META earnings
+    source_priority:
+      - company earnings releases
+      - SEC filings
+      - earnings call transcripts
+      - reputable financial news
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+  - id: nvda_hbm_packaging_supply
+    ticker: NVDA
+    category: industry
+    event_or_indicator: Supply constraints around HBM and advanced packaging
+    why_it_matters: HBM and advanced packaging availability can affect shipment timing, margins, and demand fulfillment.
+    status: pending
+    impact_if_validated: mixed
+    importance: high
+    frequency: monthly
+    validation_rule: Validate through supplier commentary, company filings, earnings calls, or confirmed industry data.
+    suggested_research_response: Wait for confirmation and update valuation model shipment and margin assumptions if constraints are material.
+    next_check_date: Next supplier and NVIDIA earnings cycle
+    source_priority:
+      - company earnings releases
+      - supplier investor relations
+      - industry association data
+      - reputable financial news
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+  - id: nvda_datacenter_revenue_growth
+    ticker: NVDA
+    category: company-specific
+    event_or_indicator: Data-center revenue growth
+    why_it_matters: Data-center revenue is the core evidence line for AI accelerator demand and platform adoption.
+    status: monitoring
+    impact_if_validated: positive
+    importance: high
+    frequency: quarterly
+    validation_rule: Validate from NVIDIA earnings release, 10-Q or 10-K segment disclosures, and investor presentation commentary.
+    suggested_research_response: Increase thesis confidence if growth remains broad-based and supported by source-backed segment data.
+    next_check_date: Next NVIDIA earnings release
+    source_priority:
+      - company earnings releases
+      - SEC filings
+      - investor presentations
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+  - id: nvda_gross_margin_trend
+    ticker: NVDA
+    category: company-specific
+    event_or_indicator: Gross margin trend
+    why_it_matters: Gross margin durability helps test pricing power, product mix, supply tightness, and competitive pressure.
+    status: monitoring
+    impact_if_validated: mixed
+    importance: high
+    frequency: quarterly
+    validation_rule: Validate reported and guided gross margin from company earnings materials and filings.
+    suggested_research_response: Update valuation model margin assumptions and reduce thesis confidence if margin compression is source-backed.
+    next_check_date: Next NVIDIA earnings release
+    source_priority:
+      - company earnings releases
+      - SEC filings
+      - earnings call transcripts
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+  - id: nvda_export_controls
+    ticker: NVDA
+    category: regulation
+    event_or_indicator: Export controls on AI chips
+    why_it_matters: Export restrictions can reduce addressable revenue for high-end GPUs in affected markets.
+    status: pending
+    impact_if_validated: negative
+    importance: high
+    frequency: event-driven
+    validation_rule: Validate only if confirmed by official government release, SEC filing, or company statement.
+    suggested_research_response: Escalate risk review if official restrictions affect data-center GPU sales.
+    next_check_date: Official export-control releases and company risk disclosures
+    source_priority:
+      - official government releases
+      - company filings
+      - company press releases
+      - reputable financial news
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+  - id: nvda_estimate_revisions
+    ticker: NVDA
+    category: valuation
+    event_or_indicator: Analyst estimate revisions
+    why_it_matters: Estimate revisions help distinguish supported multiple expansion from price-led FOMO risk.
+    status: monitoring
+    impact_if_validated: mixed
+    importance: high
+    frequency: weekly
+    validation_rule: Validate with licensed estimate data or company-guidance changes before changing growth assumptions.
+    suggested_research_response: Update valuation model if revisions confirm stronger fundamentals; wait for confirmation if price moves first.
+    next_check_date: Weekly estimate review and next earnings guidance
+    source_priority:
+      - licensed estimate data
+      - company guidance
+      - earnings call transcripts
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+  - id: nvda_next_earnings
+    ticker: NVDA
+    category: company-specific
+    event_or_indicator: Next earnings release
+    why_it_matters: Earnings provide the primary source update for revenue growth, margins, capex demand, guidance, and risk disclosures.
+    status: monitoring
+    impact_if_validated: neutral
+    importance: high
+    frequency: quarterly
+    validation_rule: Use the official company earnings date and company-published materials.
+    suggested_research_response: Monitor next release and refresh financial snapshot, valuation scenarios, and tracker statuses.
+    next_check_date: Next official NVIDIA earnings date
+    source_priority:
+      - company investor relations
+      - SEC filings
+    source_url: TODO
+    confidence: high
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+  - id: nvda_dma_divergence
+    ticker: NVDA
+    category: technical
+    event_or_indicator: Price divergence from 50-day and 200-day moving averages
+    why_it_matters: Price extension without estimate support can indicate timing risk even when fundamentals are strong.
+    status: monitoring
+    impact_if_validated: negative
+    importance: medium
+    frequency: daily
+    validation_rule: Validate with market data and compare price extension against estimate revisions and GF-DMA health score.
+    suggested_research_response: Review entry zone and monitor next release before changing intrinsic growth assumptions.
+    next_check_date: Daily market close
+    source_priority:
+      - exchange data
+      - licensed market data
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+AMD:
+  - id: amd_mi300_adoption
+    ticker: AMD
+    category: company-specific
+    event_or_indicator: MI300 and AI accelerator adoption
+    why_it_matters: Accelerator adoption is central to AMD's AI growth optionality and competitive positioning versus NVIDIA.
+    status: monitoring
+    impact_if_validated: positive
+    importance: high
+    frequency: quarterly
+    validation_rule: Validate from AMD earnings materials, customer disclosures, and management commentary.
+    suggested_research_response: Increase thesis confidence if source-backed customer adoption and revenue guidance improve.
+    next_check_date: Next AMD earnings release
+    source_priority:
+      - company earnings releases
+      - SEC filings
+      - investor presentations
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+  - id: amd_margin_mix
+    ticker: AMD
+    category: valuation
+    event_or_indicator: AI product mix and gross margin trend
+    why_it_matters: Margin improvement is needed to support stronger valuation scenarios.
+    status: pending
+    impact_if_validated: positive
+    importance: medium
+    frequency: quarterly
+    validation_rule: Validate through reported segment trends, gross margin guidance, and source-backed product mix commentary.
+    suggested_research_response: Update valuation model if AI mix supports durable margin expansion.
+    next_check_date: Next AMD earnings release
+    source_priority:
+      - company earnings releases
+      - SEC filings
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+ASML:
+  - id: asml_backlog_euv
+    ticker: ASML
+    category: industry
+    event_or_indicator: EUV backlog and order intake
+    why_it_matters: Backlog and orders indicate lithography demand through the semiconductor capex cycle.
+    status: monitoring
+    impact_if_validated: positive
+    importance: high
+    frequency: quarterly
+    validation_rule: Validate from ASML quarterly results, annual reports, and order disclosures.
+    suggested_research_response: Increase thesis confidence if backlog conversion and order intake support base-case growth.
+    next_check_date: Next ASML quarterly results
+    source_priority:
+      - company earnings releases
+      - annual reports
+      - investor presentations
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+  - id: asml_export_controls
+    ticker: ASML
+    category: regulation
+    event_or_indicator: Lithography export restrictions
+    why_it_matters: Export controls can affect sales by region and capex timing for advanced-node customers.
+    status: pending
+    impact_if_validated: negative
+    importance: high
+    frequency: event-driven
+    validation_rule: Validate through official government releases and ASML company disclosures.
+    suggested_research_response: Escalate risk review if restrictions materially change backlog conversion or revenue scenarios.
+    next_check_date: Official export-control updates
+    source_priority:
+      - official government releases
+      - company filings
+      - company press releases
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+TSM:
+  - id: tsm_monthly_revenue
+    ticker: TSM
+    category: company-specific
+    event_or_indicator: TSMC monthly revenue
+    why_it_matters: Monthly revenue provides an early signal for AI silicon, smartphone, and broader foundry demand.
+    status: monitoring
+    impact_if_validated: mixed
+    importance: high
+    frequency: monthly
+    validation_rule: Validate against TSMC official monthly revenue releases.
+    suggested_research_response: Update valuation model and industry demand assumptions if trends diverge from scenario expectations.
+    next_check_date: Next TSMC monthly revenue release
+    source_priority:
+      - company monthly revenue releases
+      - company investor relations
+    source_url: TODO
+    confidence: high
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+ARM:
+  - id: arm_royalty_growth
+    ticker: ARM
+    category: company-specific
+    event_or_indicator: Royalty and licensing growth
+    why_it_matters: Royalty growth tests whether AI and data-center optionality is translating into durable economics.
+    status: monitoring
+    impact_if_validated: positive
+    importance: high
+    frequency: quarterly
+    validation_rule: Validate from ARM earnings release, annual report, and segment commentary.
+    suggested_research_response: Increase thesis confidence if royalty growth and licensing pipeline improve with source-backed evidence.
+    next_check_date: Next ARM earnings release
+    source_priority:
+      - company earnings releases
+      - annual reports
+      - investor presentations
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+MU:
+  - id: mu_hbm_pricing
+    ticker: MU
+    category: industry
+    event_or_indicator: HBM and DRAM pricing
+    why_it_matters: Memory pricing and HBM mix drive cyclical upside, margin recovery, and downside risk.
+    status: monitoring
+    impact_if_validated: mixed
+    importance: high
+    frequency: monthly
+    validation_rule: Validate using company guidance, industry data, and customer demand commentary.
+    suggested_research_response: Update valuation model and cycle assumptions if pricing data confirms a stronger or weaker memory cycle.
+    next_check_date: Next memory pricing update and Micron earnings
+    source_priority:
+      - company earnings releases
+      - industry data
+      - reputable financial news
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+AVGO:
+  - id: avgo_ai_networking
+    ticker: AVGO
+    category: company-specific
+    event_or_indicator: AI networking and custom silicon revenue
+    why_it_matters: AI networking and custom accelerators can extend Broadcom's growth duration beyond traditional semiconductor cycles.
+    status: monitoring
+    impact_if_validated: positive
+    importance: high
+    frequency: quarterly
+    validation_rule: Validate through Broadcom earnings materials, segment commentary, and customer concentration disclosures.
+    suggested_research_response: Increase thesis confidence if AI revenue visibility improves and margins remain durable.
+    next_check_date: Next Broadcom earnings release
+    source_priority:
+      - company earnings releases
+      - SEC filings
+      - investor presentations
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+MSFT:
+  - id: msft_ai_capex_monetization
+    ticker: MSFT
+    category: company-specific
+    event_or_indicator: AI capex monetization and Azure growth
+    why_it_matters: Azure growth and AI capex efficiency help test whether infrastructure spending converts into revenue and margins.
+    status: monitoring
+    impact_if_validated: positive
+    importance: high
+    frequency: quarterly
+    validation_rule: Validate through Microsoft earnings releases, 10-Q filings, and management commentary.
+    suggested_research_response: Update valuation model if Azure growth and AI monetization evidence improve.
+    next_check_date: Next Microsoft earnings release
+    source_priority:
+      - company earnings releases
+      - SEC filings
+      - earnings call transcripts
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+GOOGL:
+  - id: googl_ai_search_cloud
+    ticker: GOOGL
+    category: company-specific
+    event_or_indicator: AI search impact and Google Cloud growth
+    why_it_matters: AI search behavior and cloud growth affect Alphabet's revenue durability and AI investment payback.
+    status: monitoring
+    impact_if_validated: mixed
+    importance: high
+    frequency: quarterly
+    validation_rule: Validate through Alphabet earnings releases, filings, and management commentary.
+    suggested_research_response: Update valuation model if search monetization or cloud margins materially change.
+    next_check_date: Next Alphabet earnings release
+    source_priority:
+      - company earnings releases
+      - SEC filings
+      - earnings call transcripts
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+AMZN:
+  - id: amzn_aws_ai_growth
+    ticker: AMZN
+    category: company-specific
+    event_or_indicator: AWS AI demand and capex intensity
+    why_it_matters: AWS growth and capex intensity drive Amazon's AI infrastructure economics and free cash flow trajectory.
+    status: monitoring
+    impact_if_validated: mixed
+    importance: high
+    frequency: quarterly
+    validation_rule: Validate from Amazon earnings releases, filings, AWS commentary, and capex disclosures.
+    suggested_research_response: Update valuation model if AWS growth or capex intensity changes materially.
+    next_check_date: Next Amazon earnings release
+    source_priority:
+      - company earnings releases
+      - SEC filings
+      - earnings call transcripts
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+META:
+  - id: meta_ai_capex_ads
+    ticker: META
+    category: company-specific
+    event_or_indicator: AI capex and ad monetization
+    why_it_matters: AI infrastructure spending must be weighed against ad growth, engagement, and margin durability.
+    status: monitoring
+    impact_if_validated: mixed
+    importance: high
+    frequency: quarterly
+    validation_rule: Validate from Meta earnings materials, capex guidance, and advertising performance commentary.
+    suggested_research_response: Update valuation model if AI capex changes free cash flow or ad monetization assumptions.
+    next_check_date: Next Meta earnings release
+    source_priority:
+      - company earnings releases
+      - SEC filings
+      - earnings call transcripts
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+ORCL:
+  - id: orcl_cloud_backlog
+    ticker: ORCL
+    category: company-specific
+    event_or_indicator: Cloud infrastructure backlog and RPO growth
+    why_it_matters: Backlog and RPO growth test whether Oracle's AI cloud infrastructure demand is durable.
+    status: monitoring
+    impact_if_validated: positive
+    importance: high
+    frequency: quarterly
+    validation_rule: Validate from Oracle earnings releases, filings, and RPO disclosures.
+    suggested_research_response: Increase thesis confidence if backlog converts into revenue without margin deterioration.
+    next_check_date: Next Oracle earnings release
+    source_priority:
+      - company earnings releases
+      - SEC filings
+      - investor presentations
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+PLTR:
+  - id: pltr_commercial_ai_platform
+    ticker: PLTR
+    category: company-specific
+    event_or_indicator: Commercial AI platform growth
+    why_it_matters: Commercial growth and customer expansion help test whether AI platform demand supports valuation.
+    status: monitoring
+    impact_if_validated: positive
+    importance: high
+    frequency: quarterly
+    validation_rule: Validate from Palantir earnings releases, filings, customer count, and remaining deal value disclosures.
+    suggested_research_response: Update valuation model if customer expansion and revenue growth remain source-backed.
+    next_check_date: Next Palantir earnings release
+    source_priority:
+      - company earnings releases
+      - SEC filings
+      - investor presentations
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+NBIS:
+  - id: nbis_financing_capacity
+    ticker: NBIS
+    category: company-specific
+    event_or_indicator: Financing capacity for AI cloud expansion
+    why_it_matters: Speculative AI infrastructure growth depends on funding capacity, execution, and demand conversion.
+    status: escalated
+    impact_if_validated: negative
+    importance: high
+    frequency: event-driven
+    validation_rule: Validate through company financing disclosures, filings, cash balance updates, and capex commitments.
+    suggested_research_response: Escalate risk review and update valuation model financing assumptions.
+    next_check_date: Next financing or quarterly disclosure
+    source_priority:
+      - company filings
+      - company press releases
+      - investor presentations
+    source_url: TODO
+    confidence: medium
+    last_checked: Not checked by live connectors yet
+    evidence_summary: Pending live source validation
+
+

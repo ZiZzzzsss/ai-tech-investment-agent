@@ -1,0 +1,221 @@
+# Approved data sources and connector ownership for live AI technology investment research.
+# Do not store API keys, credentials, paid-data exports, or tokens in this file.
+
+source_policy:
+  live_data_default: true
+  mock_allowed_only_for:
+    - unit tests
+    - offline development
+    - explicit --mock mode
+  rules:
+    - Primary sources override news and secondary summaries.
+    - AnySearch is for discovery, news, catalysts, and tracker updates, not financial truth.
+    - News can support catalysts but cannot be the sole source for financial figures.
+    - Rumors must be labeled low-confidence and must never be treated as confirmed facts.
+    - If a source is unavailable, show "Not available from current sources".
+    - Missing figures must not be invented.
+    - Paywalled content must not be scraped, bypassed, or used unlawfully.
+
+data_source_mapping:
+  market_data:
+    connector: src/connectors/market_data.py
+    provider_priority:
+      - Financial Modeling Prep
+      - EODHD
+      - Polygon
+      - Tiingo
+      - Alpha Vantage
+    approved_sources:
+      - Financial Modeling Prep
+      - EODHD
+      - Polygon
+      - Tiingo
+      - Alpha Vantage
+      - Nasdaq Data Link
+      - exchange data
+    use_for:
+      - latest available stock price
+      - OHLCV
+      - volume
+      - market cap when available
+      - daily historical prices
+      - moving averages
+      - technical indicators
+      - relative performance
+    forbidden_sources:
+      - AnySearch
+      - random web snippets
+      - news articles
+
+  financial_statements_and_filings:
+    connector: src/connectors/fundamentals_data.py
+    provider_priority:
+      - SEC EDGAR
+      - Financial Modeling Prep
+      - EODHD
+    approved_sources:
+      - SEC EDGAR company submissions
+      - SEC company facts / XBRL
+      - company 10-K
+      - company 10-Q
+      - company 8-K
+      - annual reports
+      - quarterly reports
+      - Financial Modeling Prep structured financial statements as fallback
+      - EODHD structured fundamentals as fallback
+    use_for:
+      - revenue
+      - gross profit
+      - operating income
+      - net income
+      - EBITDA if available or calculable
+      - cash and equivalents
+      - total debt
+      - total assets
+      - total liabilities
+      - operating cash flow
+      - capital expenditure
+      - free cash flow if calculable
+      - shares outstanding
+      - diluted EPS
+    forbidden_sources:
+      - AnySearch as financial source
+      - unsourced news articles
+      - model-generated numbers
+
+  analyst_estimates:
+    connector: src/connectors/estimates_data.py
+    provider_priority:
+      - Financial Modeling Prep
+      - EODHD
+    approved_sources:
+      - Financial Modeling Prep analyst estimates
+      - EODHD analyst estimates where available
+    forbidden_sources:
+      - AnySearch
+      - unsourced news articles
+
+  earnings_calendar:
+    connector: src/connectors/earnings_calendar.py
+    provider_priority:
+      - Financial Modeling Prep
+      - EODHD
+      - company investor relations
+    approved_sources:
+      - Financial Modeling Prep earnings calendar
+      - EODHD earnings calendar where available
+      - company investor relations
+
+  company_ir:
+    connector: src/connectors/company_ir.py
+    approved_sources:
+      - company investor relations
+      - earnings releases
+      - investor presentations
+      - official press releases
+      - legally available earnings call transcripts
+      - SEC 8-K exhibits
+    use_for:
+      - company guidance
+      - backlog
+      - RPO
+      - order commentary
+      - product updates
+      - customer announcements
+      - management commentary
+    discovery_allowed:
+      - AnySearch may discover official IR pages but primary company source remains the cited source.
+
+  macro_data:
+    connector: src/connectors/macro_data.py
+    approved_sources:
+      - FRED
+      - BLS
+      - BEA
+      - central bank releases
+      - treasury data
+    use_for:
+      - US 10-year treasury yield
+      - real rates
+      - federal funds rate
+      - CPI
+      - PCE
+      - unemployment rate
+      - credit spreads
+      - DXY from structured market data when available
+      - VIX from structured market data when available
+    forbidden_sources:
+      - AnySearch macro time series
+      - news articles as macro data source
+
+  industry_data:
+    connector: src/connectors/industry_data.py
+    approved_sources:
+      - SIA semiconductor sales
+      - SEMI equipment billings
+      - WSTS forecasts
+      - TSMC monthly revenue
+      - hyperscaler filings and earnings releases
+      - official government export-control releases
+    use_for:
+      - semiconductor sales cycle
+      - equipment billings
+      - foundry revenue trends
+      - hyperscaler capex
+      - HBM and DRAM pricing signals
+      - advanced packaging capacity
+      - data center power constraints
+      - AI accelerator demand
+      - export-control developments
+      - cloud AI demand
+      - enterprise AI adoption
+
+  anysearch:
+    connector: src/connectors/anysearch_data.py
+    approved_uses:
+      - source discovery
+      - recent news
+      - recent company developments
+      - official source discovery
+      - regulatory developments
+      - risk and opportunity tracker updates
+      - finding reputable news that links to primary sources
+    forbidden_uses:
+      - latest stock price
+      - financial statement figures
+      - valuation multiples
+      - EPS estimates
+      - revenue guidance
+      - confirmed backlog
+      - signed contracts
+      - macroeconomic time series
+
+official_ir_urls:
+  NVDA:
+    - https://investor.nvidia.com/
+  AMD:
+    - https://ir.amd.com/
+  ASML:
+    - https://www.asml.com/en/investors
+  TSM:
+    - https://investor.tsmc.com/
+  ARM:
+    - https://investors.arm.com/
+  MU:
+    - https://investors.micron.com/
+  AVGO:
+    - https://investors.broadcom.com/
+  MSFT:
+    - https://www.microsoft.com/en-us/investor
+  GOOGL:
+    - https://abc.xyz/investor/
+  AMZN:
+    - https://ir.aboutamazon.com/
+  META:
+    - https://investor.fb.com/
+  ORCL:
+    - https://investor.oracle.com/
+  PLTR:
+    - https://investors.palantir.com/
+  NBIS:
+    - https://group.nebius.com/investors
