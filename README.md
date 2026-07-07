@@ -2,7 +2,7 @@
 
 TODO: Add setup instructions, architecture notes, and example workflows.
 
-This Python project will support source-backed investment research for AI, semiconductor, and technology companies. Planned outputs include research memos with valuation scenarios, AI growth optionality, entry-price ranges, macro and industry risks, catalysts, and monitoring indicators.
+This  project will support source-backed investment research for AI, semiconductor, and technology companies. Planned outputs include research memos with valuation scenarios, AI growth optionality, entry-price ranges, macro and industry risks, catalysts, and monitoring indicators.
 
 ## Report Generator
 
@@ -70,7 +70,7 @@ Then open:
 http://localhost:8000
 ```
 
-Tracked live tickers include `NVDA`, `AMD`, `ASML`, `TSM`, `ARM`, `MU`, `AVGO`, `MSFT`, `GOOGL`, `AMZN`, `META`, `ORCL`, `PLTR`, and `NBIS`.
+Tracked live tickers include `NVDA`, `AMD`, `ASML`, `TSM`, `ARM`, `MU`, `AVGO`, `MSFT`, `GOOGL`, `AMZN`, `META`, `ORCL`, and `NBIS`.
 
 ## Source Discipline
 
