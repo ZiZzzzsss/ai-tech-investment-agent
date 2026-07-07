@@ -1,24 +1,220 @@
-﻿# AI Technology Investment Agent
+# AI Technology Investment Research Agent
 
-TODO: Add setup instructions, architecture notes, and example workflows.
+## Overview
 
-This Python project will support source-backed investment research for AI, semiconductor, and technology companies. Planned outputs include research memos with valuation scenarios, AI growth optionality, entry-price ranges, macro and industry risks, catalysts, and monitoring indicators.
+This is a local AI-assisted equity research agent for AI, semiconductor, cloud infrastructure, data center, and technology companies.
 
-## Report Generator
+The project generates structured investment research memos using source-backed data, valuation models, risk tracking, calculation audits, and local HTML output. It is designed as a disciplined research assistant, not as a trading bot and not as financial advice.
 
-Live data is the default. The agent uses configured source-specific connectors
-and marks unavailable fields clearly when credentials or sources are missing.
+The current implementation focuses on the engineering architecture behind a research agent:
 
-Generate a live Markdown memo:
+- Source-specific data connectors and fallback logic.
+- Financial metric normalization and fiscal-period handling.
+- Valuation, scenario, growth, and trend-health models.
+- Source quality, missing-data, and calculation-audit checks.
+- Local-only Markdown and HTML report generation.
+- Tests that protect valuation math, report schema, source handling, and privacy constraints.
+
+## Why This Project Exists
+
+AI and semiconductor stocks can be difficult to analyze because current valuation may look expensive while future growth depends on uncertain variables such as hyperscaler capex, product cycles, signed contracts, supply constraints, advanced packaging capacity, export controls, and estimate revisions.
+
+This project was built to separate:
+
+- Current fundamentals.
+- Future growth optionality.
+- Market-implied expectations.
+- Confirmed evidence.
+- Analyst assumptions.
+- Narrative or FOMO-driven signals.
+
+The goal is to make the research process more reproducible, transparent, and source-aware.
+
+## What The Agent Produces
+
+The agent produces a buy-side-style company memo in Markdown and/or static local HTML. A full memo includes:
+
+1. **Executive dashboard**: high-level valuation, growth, risk, entry-zone, data-quality, and calculation-audit status.
+2. **Data coverage and source status**: which connectors worked, which were unavailable, and why.
+3. **Financial snapshot**: source-labeled financial figures and concise analytical context.
+4. **Fiscal Period & TTM Basis**: period basis for financial inputs, TTM construction status, and alignment warnings.
+5. **Valuation multiples**: EV/Sales, EV/EBITDA, P/E, P/FCF, P/S, margins, and growth metrics where available.
+6. **Bear/base/bull scenario valuation**: scenario-weighted fair value rather than a single target price.
+7. **Entry-price framework**: conservative, reasonable, and expensive/wait zones without direct buy/sell language.
+8. **GF-DMA health view**: trend health and entry discipline based on fundamentals, moving averages, divergence, and estimate support.
+9. **Bayesian intrinsic growth view**: probability-weighted growth-regime analysis using evidence quality.
+10. **TAM-adjusted PEG view**: growth-stock valuation adjusted for runway, quality, moat, cyclicality, dilution, and execution risk.
+11. **Risk & Opportunity Tracker**: macro, market, industry, regulatory, company-specific, valuation, and technical signals.
+12. **Macro and industry tracker**: rates, inflation, volatility, semiconductor cycle, capex, export controls, and other relevant signals.
+13. **Recent validated developments**: source-backed updates from official or high-quality sources.
+14. **Pending signals**: items that require validation before affecting the thesis.
+15. **Catalysts and risks**: positive and negative developments to monitor.
+16. **What changed since last review**: comparison with the prior memo for the same ticker.
+17. **What would change the view**: explicit thesis-change triggers.
+18. **Data quality and confidence level**: missing fields, freshness, connector warnings, and confidence assessment.
+19. **Sources and query log**: source list and AnySearch/source-cache query trail where available.
+
+## Analytical Models
+
+### Traditional Valuation
+
+Traditional valuation is used to evaluate current fundamentals through EV/Sales, EV/EBITDA, P/E, P/FCF, P/S, margins, revenue growth, and free cash flow. These metrics are period-aware and prefer TTM financial denominators where appropriate.
+
+### Scenario Valuation
+
+High-growth AI companies should not be reduced to one target price. The agent uses bear, base, and bull cases, then calculates a probability-weighted fair value and a visible scenario range.
+
+### Entry-Price Framework
+
+The project avoids direct buy/sell recommendations. Instead, it presents entry zones derived from scenario valuation:
+
+- Conservative entry zone.
+- Reasonable accumulation zone.
+- Expensive/wait zone.
+
+These zones are research aids, not trading instructions.
+
+### GF-DMA Health Index
+
+GF-DMA is used for trend health and entry discipline. It evaluates the relationship between price trend, moving averages, fundamental growth, divergence, and estimate support.
+
+It is not an intrinsic valuation model and should not be interpreted as a fair-value estimate.
+
+### Bayesian Intrinsic Growth
+
+The Bayesian growth module estimates a company's 3-5 year intrinsic growth regime. It separates confirmed evidence from weak evidence, rumors, and price-led FOMO.
+
+Growth hypotheses range from contraction to platform expansion. Price momentum alone does not increase intrinsic growth probability; if price rises without fundamental support, FOMO risk increases instead.
+
+### TAM-Adjusted PEG
+
+The TAM-adjusted PEG module adapts growth-stock valuation for:
+
+- TAM/SAM runway.
+- Business quality.
+- Pricing power.
+- Gross-margin durability.
+- Recurring or software revenue quality.
+- Cyclicality.
+- Customer concentration.
+- Dilution risk.
+- Execution risk.
+- Competitive moat.
+
+Qualitative scores are treated as model-scored assumptions, not direct API facts.
+
+### Risk & Opportunity Tracker
+
+The tracker monitors risk and opportunity signals across macro, market index, industry, company-specific, regulation, valuation, and technical categories. Each tracker item includes status, impact, importance, validation rule, suggested research response, source priority, confidence, and evidence summary.
+
+Supported statuses include pending, validated, invalidated, monitoring, and escalated.
+
+## Data Architecture
+
+The project uses a disciplined source hierarchy. It does not randomly search the web for all data.
+
+### Structured Market Data
+
+Used for price, OHLCV, market cap, history, moving averages, and technical inputs:
+
+- `yfinance`
+- `yahooquery`
+- Optional Financial Modeling Prep
+- Optional EODHD, Polygon, Tiingo, or Alpha Vantage hooks where configured
+
+### Financial Statements
+
+Used for revenue, profit, cash flow, debt, cash, shares, and EPS:
+
+- SEC EDGAR where `SEC_USER_AGENT` is configured
+- `yfinance` / `yahooquery` fallback fields
+- Optional FMP/EODHD structured fallback
+
+SEC EDGAR is treated as the highest-confidence source for official financial statement verification.
+
+### Macro Data
+
+Used for rates, inflation, unemployment, and other macro indicators:
+
+- FRED public CSV
+- FRED API when `FRED_API_KEY` is configured
+
+### News, Catalysts, And Source Discovery
+
+Used for recent developments, official source discovery, regulatory updates, catalysts, and tracker evidence:
+
+- AnySearch skill/source cache
+- Company investor relations pages
+- Official releases
+- SEC filings and company disclosures
+
+AnySearch is not used for price, OHLCV, market cap, financial statement figures, valuation multiples, EPS estimates, or macro time series.
+
+### Official Qualitative Sources
+
+Used for guidance, backlog, product updates, customer commitments, and management commentary:
+
+- Company investor relations.
+- Earnings releases.
+- Investor presentations.
+- SEC filings and 8-K exhibits.
+- Earnings transcripts where legally available.
+
+## Engineering Concerns Addressed
+
+This project includes engineering controls for reliability, traceability, and privacy:
+
+- Reliable data pipeline with source-specific connectors.
+- Provider fallback logic with visible warnings.
+- Primary-source preference and source hierarchy.
+- Data freshness and source-status diagnostics.
+- Fiscal period and TTM handling.
+- Metric-level missing-data handling.
+- Separation between direct API fields, calculated fields, filing-extracted evidence, search-discovered evidence, and model-scored assumptions.
+- Formula registry for shared calculations.
+- Calculation audit command with deterministic fixtures.
+- Unit tests and fixture-based tests.
+- No silent mock-data fallback in live mode.
+- No automatic buy/sell/hold advice.
+- Local-only private reports.
+- `.gitignore` protection for API keys, generated reports, local caches, and raw outputs.
+
+## Facts Vs Assumptions
+
+The agent separates:
+
+- **Source-backed facts**: directly supported by filings, market-data providers, macro datasets, company IR, or official releases.
+- **Calculated metrics**: derived from visible inputs and shared formulas.
+- **Extracted filing evidence**: qualitative or semi-structured evidence from filings and IR materials.
+- **Search-discovered evidence**: AnySearch/source-cache results used for discovery and catalysts only.
+- **Model-scored assumptions**: analyst-style scores for TAM, moat, pricing power, execution risk, and related qualitative factors.
+- **Unavailable data**: missing fields that should not be invented or silently replaced.
+
+This distinction matters because qualitative factors such as moat, pricing power, business quality, and TAM runway are not direct API fields.
+
+## Local Privacy
+
+The project is designed for local private use.
+
+- Reports are generated locally.
+- HTML output is local-only under `local_site/`.
+- API keys are loaded from `.env`.
+- `.env`, `local_site/`, `outputs/`, source caches, raw data, generated HTML, and private reports are ignored by Git.
+- Generated memos and source-cache files should not be committed.
+- The project does not use tracking scripts, analytics, CDN dependencies, or external fonts in local HTML output.
+
+## How To Run Locally
+
+Install dependencies:
 
 ```bash
-python run_report.py --ticker NVDA --format markdown --live
+pip install -r requirements.txt
 ```
 
-The report is written to:
+Check data-source readiness:
 
-```text
-outputs/markdown/NVDA.md
+```bash
+python run_report.py --diagnose-data
 ```
 
 Generate a live HTML memo:
@@ -27,22 +223,28 @@ Generate a live HTML memo:
 python run_report.py --ticker NVDA --format html --live
 ```
 
-The HTML memo is written to:
-
-```text
-local_site/company_memos/NVDA.html
-```
-
-Generate both formats:
-
-```bash
-python run_report.py --ticker NVDA --format both --live
-```
-
-Use mock fixtures only when explicitly requested:
+Generate a mock HTML memo:
 
 ```bash
 python run_report.py --ticker NVDA --format html --mock
+```
+
+Generate a live HTML memo using a saved AnySearch source cache:
+
+```bash
+python run_report.py --ticker NVDA --format html --live --use-source-cache
+```
+
+Generate Markdown:
+
+```bash
+python run_report.py --ticker NVDA --format markdown --live
+```
+
+Generate both Markdown and HTML:
+
+```bash
+python run_report.py --ticker NVDA --format both --live
 ```
 
 Generate the local dashboard:
@@ -51,13 +253,7 @@ Generate the local dashboard:
 python run_dashboard.py --live
 ```
 
-The dashboard is written to:
-
-```text
-local_site/index.html
-```
-
-Preview locally:
+Preview local HTML output:
 
 ```bash
 cd local_site
@@ -70,27 +266,37 @@ Then open:
 http://localhost:8000
 ```
 
-Tracked live tickers include `NVDA`, `AMD`, `ASML`, `TSM`, `ARM`, `MU`, `AVGO`, `MSFT`, `GOOGL`, `AMZN`, `META`, `ORCL`, `PLTR`, and `NBIS`.
+Tracked tickers currently include `NVDA`, `AMD`, `ASML`, `TSM`, `ARM`, `MU`, `AVGO`, `MSFT`, `GOOGL`, `AMZN`, `META`, `ORCL`, `PLTR`, and `NBIS`.
 
-## Source Discipline
+## Configuration
 
-- Market data provider priority is yfinance, yahooquery, optional FMP, configured legacy providers, then unavailable.
-- Financial data provider priority is SEC EDGAR, yfinance, yahooquery, optional FMP, then unavailable.
-- SEC EDGAR remains the highest-confidence official filing verification source.
-- yfinance is the primary free/no-key provider for latest available price, OHLCV, history, moving averages, market cap where available, and fallback financial fields.
-- yahooquery is the backup free/no-key provider for market and fallback financial data.
-- FMP is an optional premium upgrade for broader structured coverage. Missing `FMP_API_KEY` should not block live reports.
-- Company guidance and product updates come from official company IR sources.
-- Macro data comes from official macro sources such as FRED, BLS, BEA, central banks, and treasury data.
-- Industry data comes from official or industry-recognized sources such as SIA, SEMI, WSTS, TSMC monthly revenue, company filings, and hyperscaler earnings releases.
-- AnySearch is for source discovery, recent news, catalysts, and tracker updates.
-- AnySearch must not be used for stock prices, financial statement figures, valuation multiples, EPS estimates, or macro time series.
-- Missing live data is shown as `Not available from current sources`; it is not silently replaced with mock data.
+Use `.env.example` as the template for local credentials:
 
-Run data-source diagnostics:
+```text
+FMP_API_KEY=
+EODHD_API_KEY=
+POLYGON_API_KEY=
+TIINGO_API_KEY=
+ALPHA_VANTAGE_API_KEY=
+FRED_API_KEY=
+ANYSEARCH_API_KEY=
+SEC_USER_AGENT=
+```
+
+`SEC_USER_AGENT` is required for SEC EDGAR requests. A typical value should include an app name and a contact email, for example:
+
+```text
+SEC_USER_AGENT=AIInvestmentResearchAgent/0.1 your-email@example.com
+```
+
+Do not commit `.env`.
+
+## Testing
+
+Run the test suite:
 
 ```bash
-python run_report.py --diagnose-data
+python -m pytest
 ```
 
 Run the calculation audit:
@@ -99,69 +305,83 @@ Run the calculation audit:
 python run_report.py --audit-calculations
 ```
 
-The audit checks every registered valuation and research formula against deterministic fixtures in `tests/fixtures/calculation_cases.yaml` and writes:
+The tests cover:
+
+- Valuation formulas.
+- TTM calculations.
+- Fiscal-period alignment.
+- Provider fallback behavior.
+- Missing-data handling.
+- GF-DMA calculations.
+- Bayesian growth logic.
+- TAM-adjusted PEG logic.
+- Risk tracker validation.
+- Source-cache reading.
+- Report schema and mandatory sections.
+- No unsupported buy/sell language.
+- No silent mock fallback in live mode.
+- No external scripts or CSS in generated HTML.
+- Private output folders in `.gitignore`.
+
+## Repository Structure
 
 ```text
-outputs/calculation_audit.md
+.
+├── AGENTS.md
+├── README.md
+├── data_sources.yaml
+├── watchlist.yaml
+├── trackers/
+│   └── risk_opportunity_tracker.yaml
+├── prompts/
+├── run_report.py
+├── run_dashboard.py
+├── src/
+│   ├── connectors/
+│   ├── data/
+│   ├── reports/
+│   ├── research/
+│   ├── validation/
+│   └── valuation/
+└── tests/
 ```
 
-## Fiscal Period And TTM Handling
-
-Financial metrics are period-aware. The data layer normalizes each financial value with a fiscal-period basis: quarterly, annual, TTM, forward, or point-in-time.
-
-Default valuation period rules:
-
-- Market cap and enterprise value are point-in-time.
-- EV/Sales uses TTM revenue.
-- EV/EBITDA uses TTM EBITDA.
-- P/E uses TTM net income.
-- P/FCF uses TTM free cash flow.
-- P/S uses TTM revenue.
-- Margins use matching-period numerator and denominator values.
-
-TTM is calculated as the sum of the last four comparable fiscal quarters. If fewer than four comparable quarters are available, the affected metric is marked unavailable instead of mixing annual and quarterly values. Capex is normalized as a positive cash outflow before FCF is calculated.
-
-The HTML and Markdown memos include a `Fiscal Period & TTM Basis` section showing the source, period basis, periods used, and period-alignment warnings.
-
-Recommended `.env` coverage order:
+Generated local files are intentionally excluded:
 
 ```text
-SEC_USER_AGENT=      # official SEC verification
-FRED_API_KEY=        # optional; FRED public CSV works first when reachable
-ANYSEARCH_API_KEY=   # optional; Codex source cache can also be used
-FMP_API_KEY=         # optional premium upgrade
+local_site/
+outputs/
+reports/
+*.html
 ```
 
-Install free/no-key provider dependencies:
+## Current Limitations
 
-```bash
-pip install -r requirements.txt
-```
+- This is not financial advice.
+- This is not an automated trading system.
+- Some data providers may be delayed, unofficial, rate-limited, incomplete, or unavailable.
+- Analyst estimates and estimate revisions may require paid structured providers.
+- Qualitative scores require evidence and analyst judgment.
+- AnySearch is for source discovery and catalysts, not structured financial numbers.
+- SEC XBRL extraction is functional but not exhaustive.
+- Multi-currency, corporate actions, and portfolio-level analytics are still early-stage.
 
-## Privacy
+## Future Roadmap
 
-- Generated HTML reports are static local files under `local_site/`.
-- The project does not use GitHub Pages or a `docs/` publishing folder.
-- Reports are not uploaded anywhere by the agent.
-- HTML uses local CSS and JavaScript only.
-- No tracking scripts, analytics, CDN dependencies, or external fonts are used.
-- API keys should be loaded from `.env` and never hardcoded.
-- `.env`, `local_site/`, `outputs/`, and generated HTML files are ignored by git.
+Planned improvements include:
 
-Run tests:
+- Stronger paid data provider integration.
+- Better SEC XBRL extraction and tag mapping.
+- Source conflict detection and reconciliation.
+- Corporate-action handling.
+- FX and portfolio currency handling.
+- Portfolio-level risk dashboard.
+- Expanded research journal and post-event outcome tracking.
+- Alert and monitoring system.
+- Richer catalyst and earnings calendar.
+- Better multi-company dashboard and comparison views.
+- More robust source-backed qualitative scoring.
 
-```bash
-python -m pytest
-```
+## Disclaimer
 
-## Planned Structure
-
-- `watchlist.yaml`: TODO company and ticker watchlist configuration.
-- `data_sources.yaml`: TODO source registry for filings, transcripts, market data, industry data, and macro data.
-- `prompts/`: TODO prompt templates for research and valuation workflows.
-- `src/connectors/`: TODO source connector stubs. No real APIs implemented yet.
-- `src/valuation/`: TODO valuation model stubs.
-- `src/research/`: TODO research orchestration stubs.
-- `src/reports/`: TODO report generation stubs.
-- `tests/`: TODO test scaffolding.
-- `outputs/`: TODO generated memo and analysis outputs.
+This project is for research and education only. It does not provide investment advice, personalized financial advice, or trading recommendations.
