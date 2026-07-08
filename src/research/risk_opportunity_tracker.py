@@ -275,7 +275,9 @@ def _best_result_for_tracker(
     for result in results:
         if result.ticker and result.ticker != item.ticker.upper():
             continue
-        result_text = f"{result.title} {result.snippet} {result.summary} {result.category}".lower()
+        result_text = _result_text(result)
+        if not _result_matches_tracker_topic(item, result_text):
+            continue
         score = 0.0
         for token in _keywords(item_text):
             if token in result_text:
@@ -288,6 +290,66 @@ def _best_result_for_tracker(
     if not scored:
         return None
     return sorted(scored, key=lambda row: row[0], reverse=True)[0][1]
+
+
+def _result_matches_tracker_topic(
+    item: RiskOpportunityTrackerItem,
+    result_text: str,
+) -> bool:
+    """Require tracker-specific evidence before applying AnySearch updates.
+
+    AnySearch cache entries are discovery evidence, not universal validation.
+    A broad NVIDIA earnings-release result should not validate macro rates,
+    market-index, technical, or hyperscaler-capex tracker rows unless it
+    contains the specific topic evidence required by that row.
+    """
+
+    item_text = f"{item.id} {item.event_or_indicator} {item.validation_rule}".lower()
+    required_groups = _required_topic_groups(item_text)
+    if not required_groups:
+        return True
+    return all(_contains_any(result_text, group) for group in required_groups)
+
+
+def _required_topic_groups(item_text: str) -> tuple[tuple[str, ...], ...]:
+    if "treasury" in item_text or "10-year" in item_text or "10 year" in item_text:
+        return (("treasury", "10-year", "10 year", "yield", "fred"),)
+    if "sox" in item_text or "semiconductor index" in item_text:
+        return (("sox", "semiconductor index", "market index"),)
+    if "moving average" in item_text or "dma" in item_text or "50-day" in item_text:
+        return (("moving average", "dma", "50-day", "50 day", "200-day", "200 day"),)
+    if "export" in item_text or "restriction" in item_text:
+        return (("export", "control", "controls", "restriction", "commerce", "bis", "china"),)
+    if "hyperscaler" in item_text or "capex" in item_text:
+        return (
+            ("capex", "capital expenditure", "capital expenditures"),
+            ("hyperscaler", "hyperscalers", "microsoft", "msft", "amazon", "amzn", "google", "googl", "meta", "oracle", "orcl"),
+        )
+    if "hbm" in item_text or "advanced packaging" in item_text:
+        return (("hbm", "high bandwidth memory", "advanced packaging", "cowos", "supply constraint", "supply constraints"),)
+    if "data-center" in item_text or "data center" in item_text or "datacenter" in item_text:
+        return (
+            ("data-center", "data center", "datacenter"),
+            ("revenue", "sales", "segment"),
+        )
+    if "gross margin" in item_text:
+        return (("gross margin", "margin"),)
+    if "estimate revision" in item_text or "analyst" in item_text:
+        return (("estimate", "estimates", "revision", "revisions", "consensus", "analyst", "guidance"),)
+    if "next earnings" in item_text:
+        return (("earnings date", "earnings calendar", "next earnings", "scheduled", "will report"),)
+    return ()
+
+
+def _contains_any(text: str, needles: tuple[str, ...]) -> bool:
+    return any(needle in text for needle in needles)
+
+
+def _result_text(result: SearchResult) -> str:
+    return (
+        f"{result.query} {result.title} {result.source_name} {result.snippet} "
+        f"{result.summary} {result.category} {result.reason_for_classification}"
+    ).lower()
 
 
 def _can_validate_tracker(result: SearchResult) -> bool:

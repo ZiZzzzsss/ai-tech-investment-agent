@@ -19,6 +19,37 @@ def quarter(name: str, value: float, year: int, quarter_num: int) -> PeriodMetri
     )
 
 
+def annual(name: str, value: float, year: int) -> PeriodMetric:
+    return PeriodMetric(
+        name=name,
+        value=value,
+        period=FiscalPeriod(
+            "annual",
+            fiscal_year=year,
+            period_end_date=f"{year}-12-31",
+            source_period_label=f"FY{year}",
+        ),
+        source_name="fixture",
+        source_lineage=(f"FY{year}",),
+    )
+
+
+def sec_quarter(name: str, value: float, year: int, quarter_num: int, label: str) -> PeriodMetric:
+    return PeriodMetric(
+        name=name,
+        value=value,
+        period=FiscalPeriod(
+            "quarterly",
+            fiscal_year=year,
+            fiscal_quarter=quarter_num,
+            period_end_date=f"{year}-0{quarter_num * 3}-30" if quarter_num < 4 else f"{year}-12-31",
+            source_period_label=label,
+        ),
+        source_name="fixture",
+        source_lineage=(label,),
+    )
+
+
 class TtmCalculationTests(unittest.TestCase):
     def test_correct_ttm_revenue_calculation(self) -> None:
         result = calculate_ttm_metric(
@@ -32,6 +63,25 @@ class TtmCalculationTests(unittest.TestCase):
         )
 
         self.assertEqual(result.value, 500)
+        self.assertEqual(result.period.period_type, "ttm")
+
+    def test_ttm_derives_q4_from_annual_and_ignores_ytd_duplicates(self) -> None:
+        result = calculate_ttm_metric(
+            "revenue",
+            (
+                sec_quarter("revenue", 100, 2025, 1, "Q1"),
+                sec_quarter("revenue", 100, 2025, 1, "CY2025Q1"),
+                sec_quarter("revenue", 220, 2025, 2, "Q2"),
+                sec_quarter("revenue", 120, 2025, 2, "CY2025Q2"),
+                sec_quarter("revenue", 350, 2025, 3, "Q3"),
+                sec_quarter("revenue", 130, 2025, 3, "CY2025Q3"),
+                annual("revenue", 500, 2025),
+                sec_quarter("revenue", 160, 2026, 1, "CY2026Q1"),
+            ),
+        )
+
+        self.assertEqual(result.value, 560)
+        self.assertEqual(result.source_lineage, ("CY2025Q2", "CY2025Q3", "FY2025 derived Q4", "CY2026Q1"))
         self.assertEqual(result.period.period_type, "ttm")
 
     def test_missing_quarter_prevents_ttm(self) -> None:

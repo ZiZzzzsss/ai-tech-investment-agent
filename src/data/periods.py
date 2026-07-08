@@ -293,19 +293,103 @@ def period_warnings(metrics: Iterable[PeriodMetric]) -> tuple[str, ...]:
 
 
 def _latest_four_comparable_quarters(metrics: tuple[PeriodMetric, ...]) -> tuple[PeriodMetric, ...]:
-    quarters = [
-        metric
-        for metric in metrics
-        if metric.period.period_type == "quarterly"
-        and metric.period.fiscal_quarter in {1, 2, 3, 4}
-        and metric.period.period_end_date
-    ]
+    quarters = [*_deduplicated_quarters(metrics), *_derived_fourth_quarters(metrics)]
     quarters = sorted(quarters, key=lambda metric: metric.period.period_end_date)
     if len(quarters) < 4:
         return tuple(quarters)
     latest_four = tuple(quarters[-4:])
-    quarter_keys = {(metric.period.fiscal_year, metric.period.fiscal_quarter) for metric in latest_four}
+    quarter_keys = {(metric.period.period_end_date, metric.period.fiscal_quarter) for metric in latest_four}
     return latest_four if len(quarter_keys) == 4 else ()
+
+
+def _deduplicated_quarters(metrics: tuple[PeriodMetric, ...]) -> tuple[PeriodMetric, ...]:
+    by_period: dict[tuple[str, int], PeriodMetric] = {}
+    for metric in metrics:
+        if (
+            metric.period.period_type != "quarterly"
+            or metric.period.fiscal_quarter not in {1, 2, 3, 4}
+            or not metric.period.period_end_date
+        ):
+            continue
+        key = (metric.period.period_end_date, metric.period.fiscal_quarter)
+        current = by_period.get(key)
+        if current is None or _quarter_quality(metric) > _quarter_quality(current):
+            by_period[key] = metric
+    return tuple(sorted(by_period.values(), key=lambda metric: metric.period.period_end_date))
+
+
+def _derived_fourth_quarters(metrics: tuple[PeriodMetric, ...]) -> tuple[PeriodMetric, ...]:
+    quarters = _deduplicated_quarters(metrics)
+    annuals = sorted(
+        (
+            metric
+            for metric in metrics
+            if metric.period.period_type == "annual"
+            and metric.value is not None
+            and metric.period.period_end_date
+        ),
+        key=lambda metric: metric.period.period_end_date,
+    )
+    derived: list[PeriodMetric] = []
+    existing_q4_dates = {metric.period.period_end_date for metric in quarters if metric.period.fiscal_quarter == 4}
+    for annual in annuals:
+        if annual.period.period_end_date in existing_q4_dates:
+            continue
+        prior = [
+            metric
+            for metric in quarters
+            if metric.value is not None
+            and metric.period.fiscal_quarter in {1, 2, 3}
+            and metric.period.period_end_date < annual.period.period_end_date
+        ]
+        latest_by_quarter: dict[int, PeriodMetric] = {}
+        for metric in prior:
+            quarter = int(metric.period.fiscal_quarter or 0)
+            current = latest_by_quarter.get(quarter)
+            if current is None or metric.period.period_end_date > current.period.period_end_date:
+                latest_by_quarter[quarter] = metric
+        if set(latest_by_quarter) != {1, 2, 3}:
+            continue
+        first_three = tuple(latest_by_quarter[quarter] for quarter in (1, 2, 3))
+        derived_value = float(annual.value) - sum(float(metric.value) for metric in first_three if metric.value is not None)
+        if derived_value < 0:
+            continue
+        period = FiscalPeriod(
+            period_type="quarterly",
+            fiscal_year=annual.period.fiscal_year,
+            fiscal_quarter=4,
+            period_end_date=annual.period.period_end_date,
+            filing_date=annual.period.filing_date,
+            source_name=annual.period.source_name,
+            source_period_label=f"{annual.period.label} derived Q4",
+            currency=annual.period.currency,
+            confidence="medium",
+            warning="",
+        )
+        derived.append(
+            PeriodMetric(
+                name=annual.name,
+                value=derived_value,
+                period=period,
+                source_name=annual.source_name,
+                source_url=annual.source_url,
+                source_lineage=tuple(metric.period.label for metric in first_three) + (annual.period.label,),
+                formula="Derived Q4 = annual value - Q1 - Q2 - Q3",
+            )
+        )
+    return tuple(derived)
+
+
+def _quarter_quality(metric: PeriodMetric) -> int:
+    label = metric.period.source_period_label.upper()
+    score = 0
+    if metric.period.fiscal_year is not None:
+        score += 1
+    if "CY" in label or "FY" in label:
+        score += 2
+    if metric.source_lineage:
+        score += 1
+    return score
 
 
 def _unavailable_ttm(metric_name: str, warning: str, quarters: tuple[PeriodMetric, ...]) -> PeriodMetric:

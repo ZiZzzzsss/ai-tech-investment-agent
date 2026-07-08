@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} | AI Investment Memo</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header id="hero" class="hero">
+    <div>
+      <p class="eyebrow">AI investment research memo</p>
+      <h1>{{ company_name }}</h1>
+      <p class="lede">{{ ticker }} | {{ generated_at }} | Latest price: {{ latest_price }}</p>
+      <p class="hero-conclusion">{{ one_sentence_conclusion }}</p>
+    </div>
+    <div class="badge-row">
+      <span class="badge">{{ data_freshness_badge }}</span>
+      <span class="badge confidence">{{ confidence_badge }}</span>
+      <span class="badge">{{ decision_ready_status }}</span>
+      <span class="badge">{{ investment_posture }}</span>
+    </div>
+  </header>
+  <div class="layout">
+    {{ toc }}
+    <main>
+      {{ dashboard }}
+      {{ sections }}
+    </main>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

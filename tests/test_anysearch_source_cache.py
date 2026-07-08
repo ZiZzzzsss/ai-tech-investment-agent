@@ -107,6 +107,70 @@ class AnySearchSourceCacheTests(unittest.TestCase):
         self.assertEqual(updated[0].status, "pending")
         self.assertEqual(updated[0].confidence, "low")
 
+    def test_generic_official_source_does_not_validate_macro_tracker(self) -> None:
+        tracker = RiskOpportunityTrackerItem(
+            id="nvda_us10y",
+            ticker="NVDA",
+            category="macro",
+            event_or_indicator="US 10-year treasury yield",
+            why_it_matters="Rates can pressure valuation multiples.",
+            status="monitoring",
+            impact_if_validated="negative",
+            importance="high",
+            frequency="daily",
+            validation_rule="Validate through FRED or Treasury data.",
+            suggested_research_response="review entry zone",
+            next_check_date="Daily close",
+            source_priority=("FRED", "Treasury"),
+            source_url="TODO",
+            confidence="medium",
+        )
+        result = _result(
+            title="NVIDIA Announces Financial Results",
+            snippet="Official NVIDIA earnings release with quarterly financial results.",
+            source_type="primary_company_source",
+            confidence="high",
+            status="confirmed",
+            category="recent_news",
+        )
+
+        updated = update_trackers_from_search_results((tracker,), (result,))
+
+        self.assertEqual(updated[0].status, "monitoring")
+        self.assertEqual(updated[0].evidence_summary, "")
+
+    def test_official_earnings_release_can_validate_matching_company_metric(self) -> None:
+        tracker = RiskOpportunityTrackerItem(
+            id="nvda_datacenter_revenue_growth",
+            ticker="NVDA",
+            category="company-specific",
+            event_or_indicator="Data-center revenue growth",
+            why_it_matters="Data-center revenue is the core AI accelerator demand signal.",
+            status="monitoring",
+            impact_if_validated="positive",
+            importance="high",
+            frequency="quarterly",
+            validation_rule="Validate from NVIDIA earnings release segment disclosures.",
+            suggested_research_response="increase thesis confidence",
+            next_check_date="Next NVIDIA earnings release",
+            source_priority=("company earnings releases",),
+            source_url="TODO",
+            confidence="medium",
+        )
+        result = _result(
+            title="NVIDIA Announces Financial Results",
+            snippet="Official NVIDIA earnings release reports data center revenue growth.",
+            source_type="primary_company_source",
+            confidence="high",
+            status="confirmed",
+            category="recent_news",
+        )
+
+        updated = update_trackers_from_search_results((tracker,), (result,))
+
+        self.assertEqual(updated[0].status, "validated")
+        self.assertEqual(updated[0].confidence, "high")
+
     def test_anysearch_results_appear_in_html(self) -> None:
         company = get_mock_company("NVDA")
         result = _result(

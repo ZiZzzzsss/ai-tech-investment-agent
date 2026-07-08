@@ -16,7 +16,7 @@ from src.connectors.fmp_data import (
     parse_fmp_quote,
 )
 from src.connectors.market_data import fetch_market_data
-from src.data.provider_router import collect_provider_data
+from src.data.provider_router import _provider_statuses, collect_provider_data
 
 
 class ProviderRouterTests(unittest.TestCase):
@@ -104,6 +104,25 @@ class ProviderRouterTests(unittest.TestCase):
                                                 bundle = collect_provider_data("NVDA", AppConfig("", "fmp", "", "", "", "", "", "sec"))
 
         self.assertEqual(bundle.financial_metrics["revenue"].provider, "SEC")
+
+    def test_missing_fmp_key_is_optional_not_unavailable_failure(self) -> None:
+        statuses = _provider_statuses(
+            AppConfig("", "", "", "", "", "", "", "sec-user-agent"),
+            SimpleNamespace(source_name="yfinance", retrieved_at="now"),
+            SimpleNamespace(cik="1", warning="", retrieved_at="now"),
+            {},
+            (),
+            SimpleNamespace(sources=("https://investor.nvidia.com",), warning="", retrieved_at="now"),
+            (),
+            (),
+            use_source_cache=False,
+        )
+
+        fmp = next(item for item in statuses if item.provider == "FMP optional")
+        self.assertEqual(fmp.configured, "optional")
+        self.assertEqual(fmp.availability, "not configured")
+        self.assertNotEqual(fmp.configured, "missing")
+        self.assertNotEqual(fmp.availability, "unavailable")
 
 
 if __name__ == "__main__":

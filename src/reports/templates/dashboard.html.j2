@@ -1,0 +1,13 @@
+<section id="executive-verdict" class="dashboard">
+  <div class="dashboard-heading">
+    <p class="eyebrow">Executive verdict</p>
+    <h2>{{ verdict }}</h2>
+    <p class="role">{{ company_name }} | {{ ticker }} | {{ archetype }}</p>
+    <p class="meta-line">Price: {{ price }} | Confidence: {{ confidence }} | {{ generated_at }}</p>
+  </div>
+  {{ verdict_insights }}
+  {{ summary }}
+  <div class="metric-grid">
+    {{ cards }}
+  </div>
+</section>

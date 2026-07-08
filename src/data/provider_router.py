@@ -132,18 +132,29 @@ def _provider_statuses(
     used_financial_providers = {metric.provider for metric in financial_metrics.values()}
     macro_available = [item for item in macro if item.latest_value is not None]
     anysearch_available = [item for item in anysearch if item.url]
+    yahooquery_installed = is_yahooquery_installed()
+    yahooquery_used = market.source_name == "yahooquery" or "yahooquery" in used_financial_providers
+    fred_configured = bool(config.fred_api_key) or bool(macro_available)
+    anysearch_configured = bool(config.anysearch_api_key) or use_source_cache or bool(anysearch)
     return (
         _status("yfinance", is_yfinance_installed(), market.source_name == "yfinance" or "yfinance" in used_financial_providers, market.source_name == "yfinance" or "yfinance" in used_financial_providers, "Primary free/no-key provider for price, OHLCV, history, moving averages, and financial fallbacks.", market.retrieved_at if market.source_name == "yfinance" else ""),
-        _status("yahooquery", is_yahooquery_installed(), market.source_name == "yahooquery" or "yahooquery" in used_financial_providers, market.source_name == "yahooquery" or "yahooquery" in used_financial_providers, "Backup free/no-key provider for market data, financial fallbacks, and news where available.", market.retrieved_at if market.source_name == "yahooquery" else ""),
-        _status("FMP optional", bool(config.fmp_api_key), market.source_name == "Financial Modeling Prep" or "FMP" in used_financial_providers, bool(config.fmp_api_key) and (market.source_name == "Financial Modeling Prep" or "FMP" in used_financial_providers), "Optional premium provider; an absent FMP key is not a blocker.", market.retrieved_at if market.source_name == "Financial Modeling Prep" else ""),
+        _status("yahooquery", yahooquery_installed, yahooquery_used, yahooquery_installed, "Installed backup free/no-key provider for market data, financial fallbacks, and news; marked not used when yfinance or SEC satisfies the request first.", market.retrieved_at if market.source_name == "yahooquery" else ""),
+        ProviderStatus(
+            "FMP optional",
+            "configured" if config.fmp_api_key else "optional",
+            "used" if market.source_name == "Financial Modeling Prep" or "FMP" in used_financial_providers else "not used",
+            "available" if config.fmp_api_key and (market.source_name == "Financial Modeling Prep" or "FMP" in used_financial_providers) else "not configured",
+            "Optional premium upgrade for estimates, earnings calendar, and supplemental ratios. It is not required because the no-key pipeline uses yfinance/yahooquery plus SEC and FRED first.",
+            market.retrieved_at if market.source_name == "Financial Modeling Prep" else "",
+        ),
         _status("SEC EDGAR", bool(config.sec_user_agent), bool(sec.cik), bool(sec.cik), sec.warning or "Official filing verification source.", sec.retrieved_at if sec.cik else ""),
-        _status("FRED", bool(config.fred_api_key), bool(macro_available), bool(macro_available), "FRED API or public CSV fallback for macro indicators.", macro_available[0].date if macro_available else ""),
+        _status("FRED", fred_configured, bool(macro_available), bool(macro_available), "FRED API or public CSV fallback for macro indicators; public CSV fallback is configured when it returns data.", macro_available[0].date if macro_available else ""),
         _status(
             "AnySearch Skill / source cache",
-            bool(config.anysearch_api_key) or use_source_cache,
+            anysearch_configured,
             bool(anysearch_available),
             bool(anysearch_available),
-            "Codex AnySearch skill source-cache for discovery, recent news, catalysts, regulatory updates, and tracker evidence only.",
+            "Codex AnySearch skill/source-cache workflow for discovery, recent news, catalysts, regulatory updates, and tracker evidence only. API key is optional; source cache is preferred for report generation.",
             anysearch_available[0].retrieved_at if anysearch_available else "",
         ),
         _status("Company IR", bool(ir.sources), bool(ir.sources), bool(ir.sources), f"{len(ir.sources)} official IR source(s) configured." if ir.sources else ir.warning, ir.retrieved_at if ir.sources else ""),
